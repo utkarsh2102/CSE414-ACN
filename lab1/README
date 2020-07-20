@@ -1,0 +1,11 @@
+Hiya,
+
+Topic: Inter Process Communication (IPC)
+Compile: gcc file -o binary
+Instructions to run:
+  1. First, run the msgrcv binary (./msgrcv) to check if you receive anything.
+     Expect an error at this point.
+  2. Then, run the msgsend binary (./msgsend) to initiate the queue and send
+     the message. It's an hard-coded array of texts at the moment.
+  3. Now, run the msgrcv binary (./msgrcv) again to receive the same array of
+     texts. This should not yield any error now.
