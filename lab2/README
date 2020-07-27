@@ -1,0 +1,8 @@
+Hiya,
+
+Topic: Inter Process Communication (IPC) using Semaphores
+Compile: gcc ipc_semapohore.c -lpthread -o ipc_semapohore
+Instructions to run:
+  1. Run the ipc_semaphore binary (./ipc_semaphore).
+  2. Enter the number of children processes (eg: 10).
+  3. Enter the number of semaphore (resources) (eg: 2).
