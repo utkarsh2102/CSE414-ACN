@@ -1,0 +1,11 @@
+Hiya,
+
+Topic: Inter Process Communication (IPC) using FIFO
+Compile: gcc file -o binary
+Instructions to run:
+  1. First, run the fifo_read binary (./fifo_read) to check if you receive anything.
+     Expect some garbage value to show up.
+  2. Then, run the fifo_write binary (./fifo_write) to create /tmp/utkarsh_fifo (a Named Pipe)
+     file. And it also writes "Utkarsh Gupta" to it.
+  3. Now, run the fifo_read binary (./fifo_read) again to receive the same text (Utkarsh Gupta).
+     This should not yield any error now. And output the same text.
