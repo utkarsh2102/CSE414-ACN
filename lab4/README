@@ -1,0 +1,9 @@
+Hiya,
+
+Topic: TCP application to reverse the input string.
+Compile: gcc file -o binary
+Instructions to run:
+  1. First, run the server binary (./server) to run the server.
+  2. Then, run the client binary (./clinet) to initiate the TCP connection.
+  3. Now, input some string in the client connection.
+     And the reversed string will be returned as the output.
