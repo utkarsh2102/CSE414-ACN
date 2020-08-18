@@ -1,0 +1,99 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amssymb}
+
+\title{\textbf{Advanced Computer Network \\
+               Minor Project I}}
+\author{\Large{Utkarsh Gupta \\
+        \large A2305217557 \\
+        \large 7CSE-8Y}}
+\date{\Large{August 17th 2020}}
+
+\begin{document}
+
+\maketitle
+
+\section{Question}
+
+Suppose a computer in an army headquarters is transferring a file of 10 Megabits to a computer placed in a
+check post situated at the distance of 2000 KM. Assuming that sender and receiver  computers are connected
+through a point to point link of 1 Gigabit and propagation speed as 2.4 x $10^{8}$ meters per seconds, you are
+required to calculate the following:
+
+1.	Propagation Time
+
+2.	Transmission Time 
+
+\section{Solution}
+
+\subsection{Propagation Time}
+
+\vspace{2mm}
+\hspace{5.5mm} Distance \hspace{1.95cm} = 2000 km
+
+\hspace{0.3mm} Propagation speed \hspace{0.4cm} = 2.4 x $10^{8}$ m/s
+
+\hspace{3.5cm} = 240000000 $ms^{-1}$
+
+\vspace{5mm}
+\hspace{0.3mm} For conversion of meter to kilometer,
+
+\hspace{0.3mm} Propagation speed \hspace{0.4cm} = 240000000/1000
+
+\hspace{3.5cm} = 240000 $kms^{-1}$
+
+\vspace{5mm}
+\hspace{0.3mm} Propagation time \hspace{0.4cm} = \Large{$\frac{Distance}{Propagation\ Time}$}
+\vspace{2mm}
+
+\normalsize{
+\hspace{3.35cm} = \Large{$\frac{2000}{240000} s$}
+}
+\vspace{2mm}
+
+\normalsize{
+\hspace{3.35cm} = 0.008333 s
+
+\hspace{3.35cm} = 8.333 ms
+
+\hspace{3.35cm} = \underline{8333.33 $\mu$s}
+}
+
+\newpage
+
+\subsection{Transmission Time}
+
+\vspace{2mm}
+\hspace{5.5mm} Message size \hspace{1.3cm} = 10 Megabits
+
+\hspace{0.3mm} Bandwidth \hspace{1.5cm} = 1 Gigabit/sec
+
+\hspace{3.45cm} = 1000 Megabits/sec
+
+\vspace{2mm}
+\hspace{0.3mm} We know,
+
+\hspace{0.3mm} Transmission time \hspace{0.35cm} = \Large{$ \frac{Message\ Size}{Bandwidth} $}
+\vspace{2mm}
+
+\normalsize{
+\hspace{3.45cm} = \Large{$ \frac{10}{1000} s$}
+}
+\vspace{2mm}
+
+\normalsize{
+\hspace{3.45cm} = 0.01 sec
+
+\hspace{3.45cm} = 10 ms
+
+\hspace{3.45cm} = \underline{10000 $\mu$s}
+}
+
+\vspace{5mm}
+\subsection{Result}
+
+\vspace{2mm}
+Therefore, the \textbf{propagation time} is \underline{8333.33 $\mu$s} and the \textbf{transmission time}
+is \underline{10000 $\mu$s}.
+
+\end{document}
