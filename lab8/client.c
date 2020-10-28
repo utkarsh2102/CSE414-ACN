@@ -1,83 +1,53 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <errno.h>
-#include <string.h>
-#include <sys/types.h>
 #include <sys/socket.h>
+#include <netdb.h>
+#include <string.h>
+#include <stdlib.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
-#include <fcntl.h>
-#include <signal.h>
 #include <unistd.h>
-#define BUFSIZE 512
+#include <stdio.h>
+#include <string.h>
 
-static void sig_usr (int);
-void str_cli (FILE * fp, int sockfd, struct sockaddr *server, socklen_t len);
+#define S_PORT 43454
+#define C_PORT 43455
+#define ERROR -1
+#define IP_STR "127.0.0.1"
 
-int main (int C, char *argv[]) {
-  int sd;
-  struct sockaddr_in serveraddress;
-  signal (SIGPIPE, sig_usr);
-  signal (SIGINT, sig_usr);
-  if (NULL == argv[1]) {
-    printf ("Please enter the IP address of the server.\n");
-    exit (0);
-  }
-  if (NULL == argv[2]) {
-    printf ("Please enter the port number of the server.\n");
-    exit (0);
-  }
-  sd = socket (AF_INET, SOCK_DGRAM, 0);
-  if (sd < 0) {
-    perror ("Socket error.\n");
-    exit (1);
-  }
-  memset (&serveraddress, 0, sizeof (serveraddress));
-  serveraddress.sin_family = AF_INET;
-  serveraddress.sin_port = htons (atoi (argv[2]));
-  serveraddress.sin_addr.s_addr = inet_addr (argv[1]);
-  printf ("Client starting service.\n");
-  printf ("Enter data for the server.\n");
-  str_cli (stdin, sd, (struct sockaddr *) &serveraddress, sizeof (serveraddress));
-}
+int main(int argc, char const *argv[]) {
+	int sfd, len;
+	char str_buf[2048];
+	struct sockaddr_in servaddr, clientaddr;
+	socklen_t addrlen;
+	sfd = socket(AF_INET, SOCK_DGRAM,IPPROTO_UDP);
+	if (sfd == ERROR) {
+		perror("Could not open a socket");
+		return 1;
+	}
+	memset((char *) &servaddr, 0, sizeof(servaddr));
+	servaddr.sin_family=AF_INET;
+	servaddr.sin_addr.s_addr=inet_addr(IP_STR);
+	servaddr.sin_port=htons(S_PORT);
 
-static void sig_usr (int signo) {
-  char *strpipe = "RECEIVED SIGPIPE - ERROR";
-  char *strctrl = "RECEIVED CTRL-C FROM YOU";
-  if (signo == SIGPIPE) {
-    write (1, strpipe, strlen (strpipe));
-    exit (1);
-  }
-  else if (signo == SIGINT) {
-    write (1, strctrl, strlen (strctrl));
-    exit (1);
-  }
-}
+	memset((char *) &clientaddr, 0, sizeof(clientaddr));
+	clientaddr.sin_family=AF_INET;
+	clientaddr.sin_addr.s_addr=inet_addr(IP_STR);
+	clientaddr.sin_port=htons(C_PORT);
 
-void str_cli (FILE * fp, int sockfd, struct sockaddr *to, socklen_t length) {
-  int maxdes, n;
-  fd_set rset;
-  char sendbuf[BUFSIZE], recvbuf[BUFSIZE], servername[100];
-  struct sockaddr_in serveraddr;
-  socklen_t slen;
-  FD_ZERO (&rset);
-  maxdes = (sockfd > fileno (fp) ? sockfd + 1 : fileno (fp) + 1);
-  for (;;) {
-    FD_SET (fileno (fp), &rset);
-    FD_SET (sockfd, &rset);
-    select (maxdes, &rset, NULL, NULL, NULL);
-    if (FD_ISSET (sockfd, &rset)) {
-  	  slen = sizeof (serveraddr);
-	    n = recvfrom (sockfd, recvbuf, BUFSIZE, 0, (struct sockaddr *) &serveraddr, &slen);
-  	  printf ("Data Received from server %s:\n", inet_ntop (AF_INET, &serveraddr.sin_addr, servername, sizeof (servername)));
-  	  write (1, recvbuf, n);
-	    printf ("Enter Data For the server\n");
-	  }
-    if (FD_ISSET (fileno (fp), &rset)) {
-  	  fgets (sendbuf, BUFSIZE, fp);
-	    n = strlen (sendbuf);
-	    sendto (sockfd, sendbuf, n, 0, to, length);
-	    printf ("Data Sent To Server\n");
-  	}
-  }
+	if((bind(sfd,(struct sockaddr *)&clientaddr,sizeof(clientaddr)))!=0) {
+		perror("Could not bind socket");
+		return 2;
+	}
+
+	printf("Client is running on %s:%d\n", IP_STR, C_PORT);
+	printf("Enter a string: ");
+	scanf("%[^\n]%*c",str_buf);
+	len = strlen(str_buf);
+	sendto(sfd, &len, sizeof(len), 0, (struct sockaddr *)&servaddr, sizeof(servaddr));
+	sendto(sfd, str_buf, len, 0, (struct sockaddr *)&servaddr, sizeof(servaddr));
+	addrlen = sizeof(clientaddr);
+	recvfrom(sfd, &len, sizeof(len), 0, (struct sockaddr *)&clientaddr, &addrlen);
+	recvfrom(sfd, str_buf, len, 0, (struct sockaddr *)&clientaddr, &addrlen);
+	printf("Server Replied: %s\n", str_buf);
+
+	return 0;
 }
