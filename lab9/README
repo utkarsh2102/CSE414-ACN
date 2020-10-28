@@ -1,0 +1,9 @@
+Hiya,
+
+Topic: UDP client-server to transfer a file.
+Compile: gcc file -o binary
+Instructions to run:
+  1. First, run the server binary (./server) to start the server.
+  2. Then, run the client binary (./client) to start the client.
+  3. Enter the file name you want to see the contents (from the server side).
+  4. And you'll see the contents of the file as soon as you press enter.
